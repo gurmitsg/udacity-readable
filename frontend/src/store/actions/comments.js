@@ -1,18 +1,22 @@
-import * as actionType from "./actionTypes";
+import * as actionTypes from "./actionTypes";
+import * as commentsAPIUtil from '../../utils/commentsAPIUtil'
 
-export const getComments = () => {
-    console.log('[getComments] ')
+
+
+export const getComments_action = (postId,comments) => {
     return {
-        type: actionType.GET_COMMENTS,
+        type: actionTypes.GET_COMMENTS,
+        postId,
+        comments
     }
 }
 
-export const getComment = (id) => {
-    console.log('[getComment] ' + id)
-    return {
-        type: actionType.GET_COMMENT,
-        id: id
+export const getComments = (postId) => {
+    return dispatch => {
+        return commentsAPIUtil.fetchCommentsForPost(postId)
+            .then( response =>  {
+                return dispatch(getComments_action(postId,response.data))
+            })
     }
 }
-
 

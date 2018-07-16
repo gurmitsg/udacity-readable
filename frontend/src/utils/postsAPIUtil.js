@@ -1,9 +1,25 @@
-export const fetchPosts = () => fetch(
-    "http://localhost:3001/posts",
-    { headers: { 'Authorization': '8675309' } }
+import axios from 'axios';
+const ROOT_URL = 'http://localhost:3001';
+
+const headers = {
+    'Accept': 'application/json',
+    'Authorization': 'authorized'
+}
+
+
+// non Axios
+export const fetchPosts0 = () => fetch(
+    `${ROOT_URL}/posts`,
+    { headers }
 )
 
-export const fetchPost = (id) => fetch(
-    `http://localhost:3001/posts/${id}`,
-    { headers: { 'Authorization': '8675309' } }
-)
+
+// Axios
+
+export const fetchPosts = () => {
+    return axios.get(`${ROOT_URL}/posts`, { headers })
+}
+
+export const fetchPost = (id) => {
+    return axios.get(`${ROOT_URL}/posts/${id}`, { headers });
+}

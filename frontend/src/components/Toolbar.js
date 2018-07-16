@@ -7,10 +7,10 @@ const toolbar = (props) => {
     return (
         <header>
             <div className="list-books-title">
-                <h1>MyReads</h1>
+                <h1>Readable Blog</h1>
             </div>
-            <nav className="main-nav">
-                <div className="open-search">
+            <nav className="">
+                <div className="nav-list">
                     <NavLink to="/">Home</NavLink>
                     <NavLink to="/postAdd">Add</NavLink>
                 </div>

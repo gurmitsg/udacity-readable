@@ -1,24 +1,31 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import * as Action from '../store/actions'
-import Post from './Post'
+import * as actionCreators from '../store/actions'
 
+import Post from './Post'
 //import Person from '../components/Person/Person';
-// import AddPerson from '../components/AddPerson/AddPerson';
+//import AddPerson from '../components/AddPerson/AddPerson';
+
+
 
 class Posts extends Component {
 
-    render () {
+    componentDidMount = () => {
+        this.props.getPosts()
+        
+    }
+
+    render() {
         return (
-            <div>
+            <div className="post-list">
                 {/*} <AddPerson personAdded={this.props.addPerson} /> */}
-                {this.props.posts.map(post => (
-                    <Post 
-                        key={post.id}
-                        title={post.title} 
-                        body={post.body} 
+                {console.log(this.props.posts)}
+                {Object.keys(this.props.posts).map(post_id => (
+                    <Post
+                        key={post_id} id={post_id}
                     />
                 ))}
+
             </div>
         );
     }
@@ -28,12 +35,16 @@ class Posts extends Component {
 
 
 const mapStateToProps = state => {
-    console.log(state)
     return {
-        posts: state.posts.posts,
+        posts: state.posts,
     };
 };
 
+const mapDispatchToProps = dispatch => {
+    return {
+        getPosts: () => dispatch(actionCreators.getPosts()),
+    }
+}
 
 
-export default connect(mapStateToProps)(Posts);
+export default connect(mapStateToProps, mapDispatchToProps)(Posts);

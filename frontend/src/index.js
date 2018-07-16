@@ -6,14 +6,12 @@ import registerServiceWorker from './registerServiceWorker';
 
 import { BrowserRouter } from 'react-router-dom'
 
-// import reducers from './store/reducers'
 import store from './store'
-import * as action from './store/actions'
 import { Provider } from 'react-redux'
+// import * as action from './store/actions'
+// import reducers from './store/reducers'
 
 
-store.dispatch(action.dispatchPosts())
-//store.dispatch(action.dispatchCat())
 
 const app = (
     <Provider store={store}>
@@ -25,6 +23,3 @@ const app = (
 
 ReactDOM.render(app, document.getElementById('root'));
 registerServiceWorker();
-
-
-
