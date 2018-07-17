@@ -19,7 +19,6 @@ class Posts extends Component {
         return (
             <div className="post-list">
                 {/*} <AddPerson personAdded={this.props.addPerson} /> */}
-                {console.log(this.props.posts)}
                 {Object.keys(this.props.posts).map(post_id => (
                     <Post
                         key={post_id} id={post_id}

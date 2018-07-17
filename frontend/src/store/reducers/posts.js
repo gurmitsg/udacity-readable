@@ -2,12 +2,10 @@ import * as actionType from '../actions/actionTypes'
 import { updateObject } from '../../utils/storeUtil'
 import {arrayToObject} from '../../utils/helper'
 
-const initialState = {
-    // posts: {},
-}
+const initialState = {}
 
 const reducer = (state = initialState, action) => {
-    const { post, posts,  postId, comments } = action
+    const { post, posts,  postId, comments, voteScore } = action
 
     switch (action.type) {
         case actionType.GET_POSTS: 
@@ -15,21 +13,22 @@ const reducer = (state = initialState, action) => {
         case actionType.GET_POST: 
             return updateObject(state, {[post.id]: post} )
         case actionType.GET_COMMENTS:
-            console.log('[POSTS reducer] comments',postId,comments)
-            const commentsIds = comments.reduce((acc,cur) => { acc.push(cur.id); return acc },[])
-            console.log('[POSTS REDUCER GET_COMMENTS] ' +commentsIds.length)
-            console.log(commentsIds)
+            const commentIds = comments.reduce((acc,cur) => { acc.push(cur.id); return acc },[])
             return {
                 ...state,
                 [postId]: {
                     ...state[postId],
-                    commentIds: [...commentsIds]
+                    commentIds: [...commentIds]
                 }
             }
-            /*return {
+        case actionType.UPD_POST_VOTE:
+            return {
                 ...state,
-                [ post.id ]: post
-            }*/
+                [postId]: {
+                    ...state[postId],
+                    voteScore: voteScore
+                }
+            }
         default:
             return {
                 ...state

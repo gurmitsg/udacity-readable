@@ -2,23 +2,22 @@ import * as actionType from '../actions/actionTypes'
 import { updateObject } from '../../utils/storeUtil'
 import { arrayToObject } from '../../utils/helper'
 
-const initialState = {
-    // comments: {},
-}
+const initialState = {}
 
 const reducer = (state = initialState, action) => {
-    const { comment, comments } = action
+    const { comments, commentId, voteScore } = action
 
     switch (action.type) {
         case actionType.GET_COMMENTS:
             return updateObject(state, arrayToObject(comments, "id"))
-
-        /*            case actionType.GET_COMMENT: 
-                return updateObject(state, {[comment.id]: comment} )
-                return {
-                    ...state,
-                    [ post.id ]: post
-                }*/
+        case actionType.UPD_COMMENT_VOTE:
+            return {
+                ...state,
+                [commentId]: {
+                    ...state[commentId],
+                    voteScore: voteScore
+                }
+            }
         default:
             return {
                 ...state

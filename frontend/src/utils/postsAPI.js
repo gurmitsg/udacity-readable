@@ -23,3 +23,12 @@ export const fetchPosts = () => {
 export const fetchPost = (id) => {
     return axios.get(`${ROOT_URL}/posts/${id}`, { headers });
 }
+
+export const updatePostVote = (id, option) => {
+    const request = axios
+        .post(`${ROOT_URL}/posts/${id}`,
+            { option },
+            { headers });
+
+    return request;
+}

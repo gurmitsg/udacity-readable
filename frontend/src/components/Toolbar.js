@@ -11,8 +11,13 @@ const toolbar = (props) => {
             </div>
             <nav className="">
                 <div className="nav-list">
-                    <NavLink to="/">Home</NavLink>
-                    <NavLink to="/postAdd">Add</NavLink>
+                    <div className="nav-list-item">
+                        <NavLink to="/">Home</NavLink>
+                    </div>
+                    <div className="nav-list-item">
+                        <NavLink to="/postAdd">Add</NavLink>
+                    </div>
+
                 </div>
             </nav>
         </header>

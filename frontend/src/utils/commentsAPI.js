@@ -17,10 +17,30 @@ export const fetchComment = (id) => {
     return axios.get(`${ROOT_URL}/comments/${id}`, { headers });
 }
 
+export const updateCommentVote = (id, option) => {
+    const request = axios
+        .post(`${ROOT_URL}/comments/${id}`,
+            { option },
+            { headers });
+
+    return request;
+}
+
+
+
+
+
+
+
+
+
 export const postComment = (comment) => {
     const request = axios.post(`${ROOT_URL}/comments`, comment, { headers });
     return request;
 }
+
+
+
 
 export const voteOnComment = (id, option) => {
     const request = axios

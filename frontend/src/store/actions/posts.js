@@ -1,5 +1,5 @@
 import * as actionTypes from "./actionTypes";
-import * as postsAPIUtil from '../../utils/postsAPIUtil'
+import * as postsAPI from '../../utils/postsAPI'
 
 /* Actions related to posts */
 
@@ -7,7 +7,7 @@ import * as postsAPIUtil from '../../utils/postsAPIUtil'
 // non Axios
 export const getPosts0 = function () {
     return function (dispatch) {
-        return postsAPIUtil.fetchPosts()
+        return postsAPI.fetchPosts()
             .then((res) => { return (res.json()) })
             .then(function (posts) {
                 return dispatch(getPosts_action(posts))
@@ -27,15 +27,14 @@ export const getPosts_action = (posts) => {
 
 export const getPosts = () => {
     return dispatch => {
-        return postsAPIUtil.fetchPosts()
-            .then( response =>  {
+        return postsAPI.fetchPosts()
+            .then(response => {
                 return dispatch(getPosts_action(response.data))
             })
     }
 }
 
 export const getPost_action = (post) => {
-    console.log('getPost_action',post)
     return {
         type: actionTypes.GET_POST,
         post
@@ -44,9 +43,29 @@ export const getPost_action = (post) => {
 
 export const getPost = (id) => {
     return dispatch => {
-        return postsAPIUtil.fetchPost(id)
-            .then( response =>  {
+        return postsAPI.fetchPost(id)
+            .then(response => {
                 return dispatch(getPost_action(response.data))
             })
     }
 }
+
+
+export const updatePostVote_action = (postId,post) => {
+    return {
+        type: actionTypes.UPD_POST_VOTE,
+        voteScore: post.voteScore,
+        postId,
+    }
+}
+
+export const updatePostVote = (postId, option) => {
+    return dispatch => {
+        return postsAPI.updatePostVote(postId,option)
+            .then(response => {
+                return dispatch(updatePostVote_action(postId,response.data))
+            })
+    }
+}
+
+

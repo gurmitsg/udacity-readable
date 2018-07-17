@@ -1,48 +1,48 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Vote from './Vote'
 import * as actionCreators from '../store/actions'
-
-import { withRouter } from 'react-router'
-import { Link } from 'react-router-dom'
 
 
 class Comment extends Component {
 
-    componentDidMount = () => {
-        if (this.props.id) {
-            // this.props.getComment(this.props.match.params.id)
-        }
+    voteUpHandler = () => {
+        this.props.updateVote(this.props.comment.id, 'upVote')
     }
 
+    voteDownHandler = () => {
+        this.props.updateVote(this.props.comment.id, 'downVote')
+    }
+
+
     render() {
-
-
-        console.log(this.props)
-
         return (
-            <div className="post">
-                Comment sample
-                </div>
+            <div className="post-comment">
+                <div className="post-comment-body">{this.props.comment.body}</div>
+                <div className="post-comment-author">by {this.props.comment.author}</div>
+                <Vote
+                    voteScore={this.props.comment.voteScore}
+                    voteUp={this.voteUpHandler}
+                    voteDown={this.voteDownHandler}
+                />
+            </div>
 
         )
-
     }
 }
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        comments: state.comments,
-        //postComments: state.posts[post_id].comments,
-        // comments: ownProps.match.params.id ? state.comments : null
+        comment: state.comments[ownProps.id],
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        getComments: (id) => dispatch(actionCreators.getComments(id))
+        updateVote: (id, option) => dispatch(actionCreators.updateCommentVote(id, option))
     }
 }
 
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Comment));
+export default connect(mapStateToProps, mapDispatchToProps)(Comment);
 

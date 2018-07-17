@@ -63,7 +63,7 @@ h3 {
 
 /* Posts List Page */
 .post-list {
-  margin: 0 auto;
+  margin: 10 auto;
   max-width: 800px;
 }
 
@@ -75,7 +75,7 @@ h3 {
 
 .post-list .post-title {
   color: #333;
-  /*margin: 0;*/
+  margin: 10px auto;
 }
 
 .post-meta {
@@ -151,7 +151,7 @@ h3 {
   border-color: #ccc;
   border-style: solid;
   border-width: 1px 1px 1px 3px;
-  margin: 10px 10px 10px 50px;
+  margin: 10px 10px 10px 35px;
   flex-wrap: wrap;
   padding: 10px;
   position: relative;
