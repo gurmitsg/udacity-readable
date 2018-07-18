@@ -16,9 +16,10 @@ class Post extends Component {
             this.props.getPost(this.props.match.params.id)
             this.props.getComments(this.props.match.params.id)
         }
-    
     }
 
+
+    //TODO:  dynamic single handler for voteUp/Down
     voteUpHandler = () => {
         const postId = this.props.match.params.id ? this.props.match.params.id : this.props.id
         this.props.updateVote(postId, 'upVote')
