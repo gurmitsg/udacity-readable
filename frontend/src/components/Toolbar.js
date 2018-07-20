@@ -7,15 +7,12 @@ const toolbar = (props) => {
     return (
         <header>
             <div className="list-books-title">
-                <h1>Readable Blog</h1>
+                <h1>R</h1>
             </div>
             <nav className="">
                 <div className="nav-list">
                     <div className="nav-list-item">
                         <NavLink to="/">Home</NavLink>
-                    </div>
-                    <div className="nav-list-item">
-                        <NavLink to="/postAdd">Add</NavLink>
                     </div>
 
                 </div>

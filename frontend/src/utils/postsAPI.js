@@ -20,9 +20,11 @@ export const fetchPosts = () => {
     return axios.get(`${ROOT_URL}/posts`, { headers })
 }
 
+
 export const fetchPost = (id) => {
     return axios.get(`${ROOT_URL}/posts/${id}`, { headers });
 }
+
 
 export const updatePostVote = (id, option) => {
     const request = axios
@@ -32,3 +34,29 @@ export const updatePostVote = (id, option) => {
 
     return request;
 }
+
+
+export const addPost = (data) => {
+    const request = axios
+        .post(`${ROOT_URL}/posts`, data, { headers })
+
+    return request;
+}
+
+
+export const updatePost = (id,data) => {
+    const request = axios
+        .put(`${ROOT_URL}/posts/${id}`, data, { headers })
+
+    return request;
+}
+
+export const deletePost = (id) => {
+    const request = axios
+        .delete(`${ROOT_URL}/posts/${id}`, { headers })
+
+    return request;
+}
+
+
+

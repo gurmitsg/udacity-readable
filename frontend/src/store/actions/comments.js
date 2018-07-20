@@ -11,6 +11,7 @@ export const getComments_action = (postId,comments) => {
     }
 }
 
+
 export const getComments = (postId) => {
     return dispatch => {
         return commentsAPI.fetchCommentsForPost(postId)
@@ -21,16 +22,14 @@ export const getComments = (postId) => {
 }
 
 
-
-
-
 export const updateCommentVote_action = (commentId,comment) => {
     return {
-        type: actionTypes.UPD_COMMENT_VOTE,
+        type: actionTypes.UPDATE_COMMENT_VOTE,
         voteScore: comment.voteScore,
         commentId,
     }
 }
+
 
 export const updateCommentVote = (commentId, option) => {
     return dispatch => {
@@ -40,3 +39,59 @@ export const updateCommentVote = (commentId, option) => {
             })
     }
 }
+
+
+export const addComment_action = (comment) => {
+    return {
+        type: actionTypes.ADD_COMMENT,
+        comment,
+    }
+}
+
+
+export const addComment = (comment) => {
+    return dispatch => {
+        return commentsAPI.addComment(comment)
+            .then(response => {
+                return dispatch(addComment_action(response.data))
+            })
+    }
+}
+
+export const updateComment_action = (commentId,comment) => {
+    return {
+        type: actionTypes.UPDATE_COMMENT,
+        commentId,
+        comment,
+    }
+}
+
+
+export const updateComment = (commentId,comment) => {
+    return dispatch => {
+        return commentsAPI.updateComment(commentId,comment)
+            .then(response => {
+                return dispatch(updateComment_action(commentId,response.data))
+            })
+    }
+}
+
+
+export const deleteComment_action = (commentId,postId) => {
+    return {
+        type: actionTypes.DELETE_COMMENT,
+        commentId,
+        postId,
+    }
+}
+
+
+export const deleteComment = (commentId,postId) => {
+    return dispatch => {
+        return commentsAPI.deleteComment(commentId)
+            .then(response => {
+                return dispatch(deleteComment_action(commentId,postId))
+            })
+    }
+}
+

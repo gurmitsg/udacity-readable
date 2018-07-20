@@ -65,6 +65,7 @@ function getAll (token) {
 }
 
 function add (token, post) {
+  console.log(post)
   return new Promise((res) => {
     let posts = getData(token)
 
@@ -103,6 +104,7 @@ function vote (token, id, option) {
 }
 
 function disable (token, id) {
+    console.log('delete'+id)
     return new Promise((res) => {
       let posts = getData(token)
       posts[id].deleted = true
@@ -111,6 +113,8 @@ function disable (token, id) {
 }
 
 function edit (token, id, post) {
+    //console.log(id)
+    console.log(post)
     return new Promise((res) => {
         let posts = getData(token)
         for (prop in post) {

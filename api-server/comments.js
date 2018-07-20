@@ -55,6 +55,7 @@ function get (token, id) {
 }
 
 function add (token, comment) {
+  console.log('[Comment:add] ' + comment)
   return new Promise((res) => {
     let comments = getData(token)
 

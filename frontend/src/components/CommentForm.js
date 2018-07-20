@@ -3,49 +3,39 @@ import { Formik, Form, Field } from 'formik'
 import Yup from 'yup'
 import uuid from 'uuid'
 
-class PostForm extends Component {
+class CommentForm extends Component {
 
     render() {
         return (
-            <div className="post post-form">
+            <div>
                 <Formik
 
                     validationSchema={Yup.object().shape({
-                        title: Yup.string()
-                            .min(5, 'Title must be at least 5 characters long.')
-                            .required('Title is required.'),
                         body: Yup.string()
-                            .min(5, 'Post details must be at least 5 characters long.')
-                            .required('Post details is required.'),
+                            .min(5, 'Comment details must be at least 5 characters long.')
+                            .required('Comment details is required.'),
                         author: Yup.string()
                             .min(5, 'Author must be at least 5 characters long.')
                             .required('Author is required.'),
                     })}
 
                     initialValues={{
-                        id: this.props.postId || uuid.v1(),
+                        id: this.props.id || uuid.v1(),
                         timestamp: Date.now(),
-                        title: this.props.title || '',
                         body: this.props.body || '',
                         author: this.props.author || '',
-                        category: this.props.category || 'react',
+                        parentId: this.props.parentId
                     }}
 
                     onSubmit={(values, { setSubmitting }) => {
-                        /*
-                        setTimeout(() => {
-                            alert(JSON.stringify(values, null, 2))
-                            setSubmitting(false)
-                            this.props.closeForm()    
-                        }, 1000)
-                        */
                         this.props.closeForm()
-                        if (this.props.postId) {
-                            this.props.savePost(this.props.postId, values)
+                        if (this.props.id) {
+                            this.props.saveComment(this.props.id, values)
                         } else {
-                            this.props.savePost(values)
+                            this.props.saveComment(values)
                         }
                     }}
+
 
                     render={({
                         values,
@@ -53,16 +43,10 @@ class PostForm extends Component {
                         errors,
                         dirty,
                         isSubmitting }) => (
-                            <Form className="post-form">
-                                <div>
-
-                                    {touched.title && errors.title && <div className="form-error">{errors.title}</div>}
-
-                                    <Field type="text" name="title" placeholder="Title" />
-                                </div>
+                            <Form className="comment-form">
                                 <div>
                                     {touched.body && errors.body && <div className="form-error">{errors.body}</div>}
-                                    <Field type="text" name="body" placeholder="Enter post details" />
+                                    <Field type="text" name="body" placeholder="Enter comments" />
                                 </div>
 
                                 <div>
@@ -83,5 +67,5 @@ class PostForm extends Component {
 
 
 
-export default PostForm
+export default CommentForm
 

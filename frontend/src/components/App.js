@@ -12,7 +12,6 @@ class App extends Component {
       <div className="App">
         <Layout>
           <Route path="/" exact component={Posts} />
-          <Route path="/postAdd" exact component={Posts} />
           <Route path="/:category" exact render={() => <Posts />} /> 
           <Route path="/:category/:id" render={() => <Post />} /> 
         </Layout>

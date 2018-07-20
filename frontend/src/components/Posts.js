@@ -5,7 +5,9 @@ import * as actionCreators from '../store/actions'
 import Post from './Post'
 import PostForm from './PostForm'
 
+import FAAdd from 'react-icons/lib/go/diff-added';
 import Modal from 'react-modal'
+
 
 const customStyles = {
     content: {
@@ -32,7 +34,7 @@ class Posts extends Component {
 
     afterOpenModal = () => {
         // references are now sync'd and can be accessed.
-        this.subtitle.style.color = '#f00';
+        this.subtitle.style.color = '#000fff';
     }
 
     closeModal = () => {
@@ -50,8 +52,10 @@ class Posts extends Component {
     render() {
         return (
             <div className="post-list">
-                {/*} <AddPerson personAdded={this.props.addPerson} /> */}
-                <button onClick={this.openModal}>Add Post</button>
+                <button name="add-post" className="edit-button" onClick={this.openModal}>
+                    <FAAdd />
+                </button>
+
                 <Modal
                     isOpen={this.state.modalIsOpen}
                     onAfterOpen={this.afterOpenModal}
@@ -61,22 +65,22 @@ class Posts extends Component {
                 >
                     <h2 ref={subtitle => this.subtitle = subtitle}>Add post</h2>
                     <button onClick={this.closeModal}>close</button>
-                    <PostForm email='testing@test.com' closeForm={this.closeModal} />
+                    <PostForm savePost={this.props.addPost} closeForm={this.closeModal} />
                 </Modal>
 
+                {
+                    (this.props.posts.length !== 0) &&
+                    Object.keys(this.props.posts).map(post_id => (
+                        <Post
+                            key={post_id} id={post_id}
+                        />
+                    ))
+                }
 
-                {Object.keys(this.props.posts).map(post_id => (
-                    <Post
-                        key={post_id} id={post_id}
-                    />
-                ))}
-
-            </div>
+            </div >
         );
     }
 }
-
-// clicked={() => this.props.delPerson(person.id)}
 
 
 const mapStateToProps = state => {
@@ -88,6 +92,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         getPosts: () => dispatch(actionCreators.getPosts()),
+        addPost: (post) => dispatch(actionCreators.addPost(post)),
     }
 }
 

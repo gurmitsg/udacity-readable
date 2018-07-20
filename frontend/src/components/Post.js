@@ -8,8 +8,61 @@ import { Link } from 'react-router-dom'
 import Comment from './Comment'
 import Vote from './Vote'
 
+import Modal from 'react-modal'
+import PostForm from './PostForm'
+import CommentForm from './CommentForm'
+
+import FAAdd from 'react-icons/lib/go/diff-added';
+import FAEdit from 'react-icons/lib/ti/edit';
+import FADelete from 'react-icons/lib/ti/delete';
+
+
+const customStyles = {
+    content: {
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)'
+    }
+};
+
+Modal.setAppElement('#root')
 
 class Post extends Component {
+
+    state = {
+        postModalIsOpen: false,
+        commentModalIsOpen: false,
+    }
+
+    openModal = (modalName) => {
+        if (modalName === 'post') {
+            this.setState({ postModalIsOpen: true });
+        }
+
+        if (modalName === 'comment') {
+            this.setState({ commentModalIsOpen: true });
+        }
+    }
+
+    afterOpenModal = () => {
+        // references are now sync'd and can be accessed.
+        this.subtitle.style.color = '#000fff';
+    }
+
+    closeModal = (modalName) => {
+        if (modalName === 'post') {
+            this.setState({ postModalIsOpen: false });
+        }
+
+        if (modalName === 'comment') {
+            this.setState({ commentModalIsOpen: false });
+        }
+    }
+
+
 
     componentDidMount = () => {
         if (this.props.match.params.id) {
@@ -34,7 +87,26 @@ class Post extends Component {
         if (this.props.post) {
 
             return (
-                <div className="post">
+                <div className="post-list">
+                    <Modal
+                        isOpen={this.state.postModalIsOpen}
+                        onAfterOpen={this.afterOpenModal}
+                        onRequestClose={() => this.closeModal('post')}
+                        style={customStyles}
+                        contentLabel="Post Modal"
+                    >
+                        <h2 ref={subtitle => this.subtitle = subtitle}>Edit post</h2>
+                        <button onClick={() => this.closeModal('post')}>close</button>
+                        <PostForm
+                            savePost={this.props.updatePost}
+                            closeForm={() => this.closeModal('post')}
+                            postId={this.props.post.id}
+                            title={this.props.post.title}
+                            body={this.props.post.body}
+                            author={this.props.post.author}
+                        />
+                    </Modal>
+
 
                     {this.props.id
                         ?
@@ -46,19 +118,55 @@ class Post extends Component {
                         :
                         <div className="post-title">
                             {this.props.post.title}
+
                         </div>
                     }
 
-                    <div className="post-details">
+                    <button name="edit-post" className="edit-button" onClick={() => this.openModal('post')}>
+                        <FAEdit />
+                    </button>
+
+                    {(!this.props.match.params.id) &&
+                        <button name="delete-post" className="delete-button" onClick={() => this.props.deletePost(this.props.post.id)}>
+                            <FADelete />
+                        </button>
+                    }
+
+                    <div className="post-body">
                         <p>{this.props.post.body}</p>
-                        <p>by {this.props.post.author}</p>
-                        <Vote
-                            voteScore={this.props.post.voteScore}
-                            voteUp={this.voteUpHandler}
-                            voteDown={this.voteDownHandler}
-                        />
+
+                        <div className="post-meta">
+                            <p>by {this.props.post.author}</p>
+                            <Vote
+                                voteScore={this.props.post.voteScore}
+                                voteUp={this.voteUpHandler}
+                                voteDown={this.voteDownHandler}
+                            />
+                        </div>
 
                         <p>{this.props.post.commentCount} comments</p>
+
+                        <Modal
+                            isOpen={this.state.commentModalIsOpen}
+                            onAfterOpen={this.afterOpenModal}
+                            onRequestClose={() => this.closeModal('comment')}
+                            style={customStyles}
+                            contentLabel="Comment Modal"
+                        >
+                            <h2 ref={subtitle => this.subtitle = subtitle}>Add comment</h2>
+                            <button onClick={() => this.closeModal('comment')}>close</button>
+                            <CommentForm
+                                saveComment={this.props.addComment}
+                                closeForm={() => this.closeModal('comment')}
+                                parentId={this.props.post.id}
+                            />
+                        </Modal>
+
+                        {(this.props.match.params.id) &&
+                        <button name="add-comment" className="edit-button" onClick={() => this.openModal('comment')}>
+                            <FAAdd />
+                        </button>
+                        }
 
                         {this.props.match.params.id && this.props.post.commentIds &&
                             this.props.post.commentIds.map(commentId => (
@@ -67,7 +175,6 @@ class Post extends Component {
 
                     </div>
                 </div>
-
             )
         }
         else {
@@ -90,8 +197,11 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = dispatch => {
     return {
         getPost: (id) => dispatch(actionCreators.getPost(id)),
+        updatePost: (id, post) => dispatch(actionCreators.updatePost(id, post)),
         getComments: (id) => dispatch(actionCreators.getComments(id)),
-        updateVote: (id, option) => dispatch(actionCreators.updatePostVote(id, option))
+        updateVote: (id, option) => dispatch(actionCreators.updatePostVote(id, option)),
+        deletePost: (id) => dispatch(actionCreators.deletePost(id)),
+        addComment: (id,comment) => dispatch(actionCreators.addComment(id,comment)),
     }
 }
 

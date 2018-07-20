@@ -25,6 +25,7 @@ export const getPosts_action = (posts) => {
     }
 }
 
+
 export const getPosts = () => {
     return dispatch => {
         return postsAPI.fetchPosts()
@@ -34,12 +35,14 @@ export const getPosts = () => {
     }
 }
 
+
 export const getPost_action = (post) => {
     return {
         type: actionTypes.GET_POST,
         post
     }
 }
+
 
 export const getPost = (id) => {
     return dispatch => {
@@ -51,21 +54,82 @@ export const getPost = (id) => {
 }
 
 
-export const updatePostVote_action = (postId,post) => {
+export const updatePostVote_action = (postId, post) => {
     return {
-        type: actionTypes.UPD_POST_VOTE,
+        type: actionTypes.UPDATE_POST_VOTE,
         voteScore: post.voteScore,
         postId,
     }
 }
 
+
 export const updatePostVote = (postId, option) => {
     return dispatch => {
-        return postsAPI.updatePostVote(postId,option)
+        return postsAPI.updatePostVote(postId, option)
             .then(response => {
-                return dispatch(updatePostVote_action(postId,response.data))
+                return dispatch(updatePostVote_action(postId, response.data))
             })
     }
 }
+
+
+export const addPost_action = (post) => {
+    return {
+        type: actionTypes.ADD_POST,
+        post
+    }
+}
+
+
+export const addPost = (post) => {
+    return dispatch => {
+        return postsAPI.addPost(post)
+            .then(response => {
+                return dispatch(addPost_action(response.data))
+            })
+    }
+}
+
+
+export const updatePost_action = (postId,post) => {
+    return {
+        type: actionTypes.UPDATE_POST,
+        postId,
+        post,
+    }
+}
+
+
+export const updatePost = (postId,post) => {
+    return dispatch => {
+        return postsAPI.updatePost(postId,post)
+            .then(response => {
+                return dispatch(updatePost_action(postId,response.data))
+            })
+    }
+}
+
+
+export const deletePost_action = (postId) => {
+    return {
+        type: actionTypes.DELETE_POST,
+        postId,
+    }
+}
+
+
+export const deletePost = (postId) => {
+    return dispatch => {
+        return postsAPI.deletePost(postId)
+            .then(response => {
+                return dispatch(deletePost_action(postId))
+            })
+    }
+}
+
+
+
+
+
 
 

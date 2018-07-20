@@ -13,9 +13,11 @@ export const fetchCommentsForPost = (postId) => {
     return axios.get(`${ROOT_URL}/posts/${postId}/comments`, { headers });
 }
 
+
 export const fetchComment = (id) => {
     return axios.get(`${ROOT_URL}/comments/${id}`, { headers });
 }
+
 
 export const updateCommentVote = (id, option) => {
     const request = axios
@@ -27,38 +29,24 @@ export const updateCommentVote = (id, option) => {
 }
 
 
+export const addComment = (data) => {
+    const request = axios
+        .post(`${ROOT_URL}/comments`, data, { headers })
 
-
-
-
-
-
-
-export const postComment = (comment) => {
-    const request = axios.post(`${ROOT_URL}/comments`, comment, { headers });
     return request;
 }
 
 
-
-
-export const voteOnComment = (id, option) => {
+export const updateComment = (id,data) => {
     const request = axios
-        .post(`${ROOT_URL}/comments/${id}`, { option }, { headers });
-
-    return request;
-}
-
-export const updateComment = (comment) => {
-    const request = axios
-        .put(`${ROOT_URL}/comments/${comment.id}`, comment, { headers });
+        .put(`${ROOT_URL}/comments/${id}`, data, { headers })
 
     return request;
 }
 
 export const deleteComment = (id) => {
     const request = axios
-        .delete(`${ROOT_URL}/comments/${id}`, { headers });
+        .delete(`${ROOT_URL}/comments/${id}`, { headers })
 
     return request;
 }
