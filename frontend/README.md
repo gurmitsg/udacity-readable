@@ -1,4 +1,4 @@
-# MyReads Project
+# Readable Project
 React application for blog.
 
 This is the 2nd project for Udacity's React Nanodegree course.
