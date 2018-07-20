@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as actionCreators from '../store/actions'
+import { withRouter } from 'react-router'
+import { Link } from 'react-router-dom'
 
+import * as actionCreators from '../store/actions'
 import Post from './Post'
 import PostForm from './PostForm'
 
@@ -43,18 +45,30 @@ class Posts extends Component {
 
 
     componentDidMount = () => {
+        this.props.getCategories()
         this.props.getPosts()
-
     }
 
 
 
     render() {
+
         return (
             <div className="post-list">
                 <button name="add-post" className="edit-button" onClick={this.openModal}>
                     <FAAdd />
                 </button>
+
+                {(this.props.categories.length !== 0) &&
+                    Object.keys(this.props.categories).map(category => (
+                        <div key={category} className="categories">
+                            <Link to={'/' + category}>
+                                {category}
+                            </Link>
+                        </div>
+                    ))
+                }
+
 
                 <Modal
                     isOpen={this.state.modalIsOpen}
@@ -65,7 +79,11 @@ class Posts extends Component {
                 >
                     <h2 ref={subtitle => this.subtitle = subtitle}>Add post</h2>
                     <button onClick={this.closeModal}>close</button>
-                    <PostForm savePost={this.props.addPost} closeForm={this.closeModal} />
+                    <PostForm
+                        savePost={this.props.addPost}
+                        closeForm={this.closeModal}
+                        categories={this.props.categories}
+                    />
                 </Modal>
 
                 {
@@ -86,15 +104,17 @@ class Posts extends Component {
 const mapStateToProps = state => {
     return {
         posts: state.posts,
+        categories: state.categories,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
+        getCategories: () => dispatch(actionCreators.getCategories()),
         getPosts: () => dispatch(actionCreators.getPosts()),
         addPost: (post) => dispatch(actionCreators.addPost(post)),
     }
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Posts);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Posts))

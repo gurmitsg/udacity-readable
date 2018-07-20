@@ -7,7 +7,7 @@ const toolbar = (props) => {
     return (
         <header>
             <div className="list-books-title">
-                <h1>R</h1>
+                <h1>Blog</h1>
             </div>
             <nav className="">
                 <div className="nav-list">

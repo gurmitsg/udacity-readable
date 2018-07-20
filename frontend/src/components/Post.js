@@ -62,15 +62,18 @@ class Post extends Component {
         }
     }
 
-
-
     componentDidMount = () => {
         if (this.props.match.params.id) {
             this.props.getPost(this.props.match.params.id)
             this.props.getComments(this.props.match.params.id)
+            this.props.getCategories()
         }
+
     }
 
+    componentWillUpdate = () => {
+        this.props.getComments(this.props.match.params.id)
+    }
 
     //TODO:  dynamic single handler for voteUp/Down
     voteUpHandler = () => {
@@ -104,9 +107,10 @@ class Post extends Component {
                             title={this.props.post.title}
                             body={this.props.post.body}
                             author={this.props.post.author}
+                            category={this.props.post.category}
+                            categories={this.props.categories}
                         />
                     </Modal>
-
 
                     {this.props.id
                         ?
@@ -131,6 +135,8 @@ class Post extends Component {
                             <FADelete />
                         </button>
                     }
+
+                    <div>[{this.props.post.category}]</div>
 
                     <div className="post-body">
                         <p>{this.props.post.body}</p>
@@ -163,9 +169,9 @@ class Post extends Component {
                         </Modal>
 
                         {(this.props.match.params.id) &&
-                        <button name="add-comment" className="edit-button" onClick={() => this.openModal('comment')}>
-                            <FAAdd />
-                        </button>
+                            <button name="add-comment" className="edit-button" onClick={() => this.openModal('comment')}>
+                                <FAAdd />
+                            </button>
                         }
 
                         {this.props.match.params.id && this.props.post.commentIds &&
@@ -191,17 +197,19 @@ const mapStateToProps = (state, ownProps) => {
     const post_id = ownProps.id ? ownProps.id : ownProps.match.params.id
     return {
         post: state.posts[post_id],
+        categories: state.categories,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
+        getCategories: () => dispatch(actionCreators.getCategories()),
         getPost: (id) => dispatch(actionCreators.getPost(id)),
         updatePost: (id, post) => dispatch(actionCreators.updatePost(id, post)),
         getComments: (id) => dispatch(actionCreators.getComments(id)),
         updateVote: (id, option) => dispatch(actionCreators.updatePostVote(id, option)),
         deletePost: (id) => dispatch(actionCreators.deletePost(id)),
-        addComment: (id,comment) => dispatch(actionCreators.addComment(id,comment)),
+        addComment: (id, comment) => dispatch(actionCreators.addComment(id, comment)),
     }
 }
 

@@ -28,7 +28,7 @@ class PostForm extends Component {
                         title: this.props.title || '',
                         body: this.props.body || '',
                         author: this.props.author || '',
-                        category: this.props.category || 'react',
+                        category: this.props.category || '',
                     }}
 
                     onSubmit={(values, { setSubmitting }) => {
@@ -70,6 +70,16 @@ class PostForm extends Component {
                                     <Field type="text" name="author" placeholder="Enter author" />
                                 </div>
 
+                                <div>
+                                    <label>
+                                        Category
+                                        <Field component="select" name="category">
+                                            {Object.keys(this.props.categories).map(cat => (
+                                                <option key={cat} value={cat}>{cat}</option>
+                                            ))}
+                                        </Field>
+                                    </label>
+                                </div>
                                 <button type="submit" disabled={isSubmitting}>Submit</button>
 
                             </Form>

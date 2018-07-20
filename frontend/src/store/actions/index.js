@@ -1,4 +1,8 @@
 export {
+    getCategories,
+} from './categories'
+
+export {
     getPosts,
     getPost,
     updatePostVote,    
@@ -6,6 +10,7 @@ export {
     updatePost,
     deletePost,
 } from './posts'
+
 export {
     getComments,
     getComment,
@@ -14,3 +19,4 @@ export {
     updateComment,
     deleteComment,
 } from './comments.js'
+

@@ -323,3 +323,11 @@ button {
   margin: 0 5px;
 }
 
+.categories {
+  display: inline-block;
+  padding: 5px;
+  align-items: center;
+  color: royalblue;
+  background-color: #eee;
+  border-radius: 5px;
+}
