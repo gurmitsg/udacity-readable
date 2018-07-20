@@ -16,6 +16,8 @@ import FAAdd from 'react-icons/lib/go/diff-added';
 import FAEdit from 'react-icons/lib/ti/edit';
 import FADelete from 'react-icons/lib/ti/delete';
 
+import ReactLoading from "react-loading";
+
 
 const customStyles = {
     content: {
@@ -68,12 +70,8 @@ class Post extends Component {
             this.props.getComments(this.props.match.params.id)
             this.props.getCategories()
         }
-
     }
 
-    componentWillUpdate = () => {
-        this.props.getComments(this.props.match.params.id)
-    }
 
     //TODO:  dynamic single handler for voteUp/Down
     voteUpHandler = () => {
@@ -186,7 +184,7 @@ class Post extends Component {
         else {
             return (
                 <div className="post">
-                    <font size="+1" color="blue">Loading...</font>
+                    <ReactLoading type="spin" color="#fff" height={"5%"} width={"5%"} />
                 </div>
             )
         }

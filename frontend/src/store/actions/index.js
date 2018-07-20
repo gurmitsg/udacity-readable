@@ -4,6 +4,7 @@ export {
 
 export {
     getPosts,
+    getPostsByCat,
     getPost,
     updatePostVote,    
     addPost,

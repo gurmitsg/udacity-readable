@@ -8,6 +8,8 @@ import Post from './Post'
 import PostForm from './PostForm'
 
 import FAAdd from 'react-icons/lib/go/diff-added';
+import FASort from 'react-icons/lib/fa/sort-numeric-desc';
+
 import Modal from 'react-modal'
 
 
@@ -27,7 +29,8 @@ Modal.setAppElement('#root')
 
 class Posts extends Component {
     state = {
-        modalIsOpen: false
+        modalIsOpen: false,
+        sorting: false,
     }
 
     openModal = () => {
@@ -43,21 +46,72 @@ class Posts extends Component {
         this.setState({ modalIsOpen: false });
     }
 
-
     componentDidMount = () => {
         this.props.getCategories()
+
+        if (this.props.match.params.category) {
+            this.props.getPostsByCat(this.props.match.params.category)
+        }
+        else {
+            this.props.getPosts()
+        }
+    }
+
+    sortHandler = () => {
+        this.setState({ sorting: !this.state.sorting })
         this.props.getPosts()
     }
 
+    getAllPosts = () => {
 
+        if (!this.state.sorting) {
+            return Object.keys(this.props.posts)
+        }
+        else {
+            const allPosts = Object.keys(this.props.posts).reduce((acc, cur) => {
+                acc.push([cur, this.props.posts[cur].voteScore])
+                return acc
+            }, [])
+
+            allPosts.sort(function (b, a) {
+                return a[1] - b[1];
+            });
+
+            const postKeys = allPosts.map(p => p[0])
+            return postKeys
+        }
+    }
+
+    componentDidUpdate = (prevProps) => {
+
+        if ((!prevProps.match.params.category && this.props.match.params.category) ||
+            (prevProps.match.params.category !== this.props.match.params.category)) {
+
+            this.props.getPostsByCat(this.props.match.params.category)
+        }
+    }
 
     render() {
 
         return (
             <div className="post-list">
-                <button name="add-post" className="edit-button" onClick={this.openModal}>
-                    <FAAdd />
-                </button>
+                {(!this.props.match.params.category) &&
+                    <button name="add-post" className="edit-button" onClick={this.openModal}>
+                        <FAAdd />
+                    </button>
+                }
+
+                {(!this.props.match.params.category && !this.state.sorting) &&
+                    <button name="sort-post" className="sort-button sort-button-off" onClick={this.sortHandler}>
+                        <FASort />
+                    </button>
+                }
+                {(!this.props.match.params.category && this.state.sorting) &&
+                    <button name="sort-post" className="sort-button sort-button-on" onClick={this.sortHandler}>
+                        <FASort />
+                    </button>
+                }
+
 
                 {(this.props.categories.length !== 0) &&
                     Object.keys(this.props.categories).map(category => (
@@ -68,7 +122,6 @@ class Posts extends Component {
                         </div>
                     ))
                 }
-
 
                 <Modal
                     isOpen={this.state.modalIsOpen}
@@ -88,7 +141,7 @@ class Posts extends Component {
 
                 {
                     (this.props.posts.length !== 0) &&
-                    Object.keys(this.props.posts).map(post_id => (
+                    this.getAllPosts().map(post_id => (
                         <Post
                             key={post_id} id={post_id}
                         />
@@ -112,6 +165,7 @@ const mapDispatchToProps = dispatch => {
     return {
         getCategories: () => dispatch(actionCreators.getCategories()),
         getPosts: () => dispatch(actionCreators.getPosts()),
+        getPostsByCat: (category) => dispatch(actionCreators.getPostsByCat(category)),
         addPost: (post) => dispatch(actionCreators.addPost(post)),
     }
 }

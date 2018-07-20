@@ -1,6 +1,6 @@
 import * as actionType from '../actions/actionTypes'
-import { updateObject } from '../../utils/storeUtil'
 import { arrayToObject } from '../../utils/helper'
+// import { updateObject } from '../../utils/storeUtil'
 
 const initialState = {}
 
@@ -10,13 +10,26 @@ const reducer = (state = initialState, action) => {
     switch (action.type) {
 
         case actionType.GET_POSTS:
-            // const posts_active = posts.filter(post => post.disable !== true)
-            return updateObject(state, arrayToObject(posts, "id"))
+            //return updateObject(state, arrayToObject(posts, "id"))
+            const postsById = arrayToObject(posts, "id")
+            return {
+                ...postsById
+            }
 
         case actionType.GET_POST:
         case actionType.ADD_POST:
         case actionType.UPDATE_POST:
-            return updateObject(state, { [post.id]: post })
+            let oldCommentIds = []
+            if (state[post.id]) {
+                oldCommentIds = state[post.id].commentIds
+            }
+            return {
+                ...state,
+                [post.id]: {
+                    ...post,
+                    commentIds: oldCommentIds,
+                }
+            }
 
         case actionType.DELETE_POST:
             const { [postId]: value, ...newState } = state
@@ -40,7 +53,8 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 [comment.parentId]: {
                     ...state[comment.parentId],
-                    commentIds: [...newCommentIds]
+                    commentCount: state[comment.parentId].commentCount + 1,
+                    commentIds: [...newCommentIds],
                 }
             }
 
@@ -50,6 +64,7 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 [postId]: {
                     ...state[postId],
+                    commentCount: state[postId].commentCount - 1,
                     commentIds: [...filteredCommentIds]
                 }
             }

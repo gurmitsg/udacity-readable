@@ -35,6 +35,15 @@ export const getPosts = () => {
     }
 }
 
+export const getPostsByCat = (category) => {
+    return dispatch => {
+        return postsAPI.fetchPostsByCat(category)
+            .then(response => {
+                return dispatch(getPosts_action(response.data))
+            })
+    }
+}
+
 
 export const getPost_action = (post) => {
     return {

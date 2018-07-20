@@ -26,6 +26,12 @@ export const fetchPost = (id) => {
 }
 
 
+export const fetchPostsByCat = (category) => {
+    return axios.get(`${ROOT_URL}/${category}/posts`, { headers })
+}
+
+
+
 export const updatePostVote = (id, option) => {
     const request = axios
         .post(`${ROOT_URL}/posts/${id}`,

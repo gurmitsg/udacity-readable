@@ -28,7 +28,7 @@ class PostForm extends Component {
                         title: this.props.title || '',
                         body: this.props.body || '',
                         author: this.props.author || '',
-                        category: this.props.category || '',
+                        category: this.props.category || 'react',
                     }}
 
                     onSubmit={(values, { setSubmitting }) => {
