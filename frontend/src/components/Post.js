@@ -88,7 +88,7 @@ class Post extends Component {
     render() {
         if (this.props.post) {
 
-            if (this.props.post.status === 'error') {
+            if (this.props.post.status === 'error' || !this.props.post.id) {
                 return (
                     <Error errno="404" />
                 )
