@@ -16,6 +16,14 @@ const reducer = (state = initialState, action) => {
                 ...postsById
             }
 
+        case actionType.GET_POST_ERROR:
+            return {
+                ...state,
+                [postId]: {
+                    status: 'error'
+                }
+            }
+
         case actionType.GET_POST:
         case actionType.ADD_POST:
         case actionType.UPDATE_POST:

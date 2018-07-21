@@ -1,6 +1,8 @@
 export const GET_POSTS = 'GET_POSTS'
 export const GET_POSTS_BYCAT = 'GET_POSTS_BYCAT'
 
+export const GET_POST_ERROR = 'GET_POST_ERROR'
+
 export const GET_POST = 'GET_POST'
 export const UPDATE_POST_VOTE = 'UPDATE_POST_VOTE'
 

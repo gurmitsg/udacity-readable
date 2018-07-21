@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 
 import Comment from './Comment'
 import Vote from './Vote'
+import Error from './Error'
 
 import Modal from 'react-modal'
 import PostForm from './PostForm'
@@ -87,99 +88,107 @@ class Post extends Component {
     render() {
         if (this.props.post) {
 
-            return (
-                <div className="post-list">
-                    <Modal
-                        isOpen={this.state.postModalIsOpen}
-                        onAfterOpen={this.afterOpenModal}
-                        onRequestClose={() => this.closeModal('post')}
-                        style={customStyles}
-                        contentLabel="Post Modal"
-                    >
-                        <h2 ref={subtitle => this.subtitle = subtitle}>Edit post</h2>
-                        <button onClick={() => this.closeModal('post')}>close</button>
-                        <PostForm
-                            savePost={this.props.updatePost}
-                            closeForm={() => this.closeModal('post')}
-                            postId={this.props.post.id}
-                            title={this.props.post.title}
-                            body={this.props.post.body}
-                            author={this.props.post.author}
-                            category={this.props.post.category}
-                            categories={this.props.categories}
-                        />
-                    </Modal>
-
-                    {this.props.id
-                        ?
-                        <div className="post-title">
-                            <Link to={'/' + this.props.post.category + '/' + this.props.id}>
-                                {this.props.post.title}
-                            </Link>
-                        </div>
-                        :
-                        <div className="post-title">
-                            {this.props.post.title}
-
-                        </div>
-                    }
-
-                    <button name="edit-post" className="edit-button" onClick={() => this.openModal('post')}>
-                        <FAEdit />
-                    </button>
-
-                    {(!this.props.match.params.id) &&
-                        <button name="delete-post" className="delete-button" onClick={() => this.props.deletePost(this.props.post.id)}>
-                            <FADelete />
-                        </button>
-                    }
-
-                    <div>[{this.props.post.category}]</div>
-
-                    <div className="post-body">
-                        <p>{this.props.post.body}</p>
-
-                        <div className="post-meta">
-                            <p>by {this.props.post.author}</p>
-                            <Vote
-                                voteScore={this.props.post.voteScore}
-                                voteUp={this.voteUpHandler}
-                                voteDown={this.voteDownHandler}
-                            />
-                        </div>
-
-                        <p>{this.props.post.commentCount} comments</p>
+            if (this.props.post.status === 'error') {
+                return (
+                    <Error errno="404" />
+                )
+            }
+            else {
+                return (
+                    <div className="post-list">
 
                         <Modal
-                            isOpen={this.state.commentModalIsOpen}
+                            isOpen={this.state.postModalIsOpen}
                             onAfterOpen={this.afterOpenModal}
-                            onRequestClose={() => this.closeModal('comment')}
+                            onRequestClose={() => this.closeModal('post')}
                             style={customStyles}
-                            contentLabel="Comment Modal"
+                            contentLabel="Post Modal"
                         >
-                            <h2 ref={subtitle => this.subtitle = subtitle}>Add comment</h2>
-                            <button onClick={() => this.closeModal('comment')}>close</button>
-                            <CommentForm
-                                saveComment={this.props.addComment}
-                                closeForm={() => this.closeModal('comment')}
-                                parentId={this.props.post.id}
+                            <h2 ref={subtitle => this.subtitle = subtitle}>Edit post</h2>
+                            <button onClick={() => this.closeModal('post')}>close</button>
+                            <PostForm
+                                savePost={this.props.updatePost}
+                                closeForm={() => this.closeModal('post')}
+                                postId={this.props.post.id}
+                                title={this.props.post.title}
+                                body={this.props.post.body}
+                                author={this.props.post.author}
+                                category={this.props.post.category}
+                                categories={this.props.categories}
                             />
                         </Modal>
 
-                        {(this.props.match.params.id) &&
-                            <button name="add-comment" className="edit-button" onClick={() => this.openModal('comment')}>
-                                <FAAdd />
+                        {this.props.id
+                            ?
+                            <div className="post-title">
+                                <Link to={'/' + this.props.post.category + '/' + this.props.id}>
+                                    {this.props.post.title}
+                                </Link>
+                            </div>
+                            :
+                            <div className="post-title">
+                                {this.props.post.title}
+
+                            </div>
+                        }
+
+                        <button name="edit-post" className="edit-button" onClick={() => this.openModal('post')}>
+                            <FAEdit />
+                        </button>
+
+                        {(!this.props.match.params.id) &&
+                            <button name="delete-post" className="delete-button" onClick={() => this.props.deletePost(this.props.post.id)}>
+                                <FADelete />
                             </button>
                         }
 
-                        {this.props.match.params.id && this.props.post.commentIds &&
-                            this.props.post.commentIds.map(commentId => (
-                                <Comment key={commentId} id={commentId} />
-                            ))}
+                        <div>[{this.props.post.category}]</div>
 
+                        <div className="post-body">
+                            <p>{this.props.post.body}</p>
+
+                            <div className="post-meta">
+                                <p>by {this.props.post.author}</p>
+                                <Vote
+                                    voteScore={this.props.post.voteScore}
+                                    voteUp={this.voteUpHandler}
+                                    voteDown={this.voteDownHandler}
+                                />
+                            </div>
+
+                            <p>{this.props.post.commentCount} comments</p>
+
+                            <Modal
+                                isOpen={this.state.commentModalIsOpen}
+                                onAfterOpen={this.afterOpenModal}
+                                onRequestClose={() => this.closeModal('comment')}
+                                style={customStyles}
+                                contentLabel="Comment Modal"
+                            >
+                                <h2 ref={subtitle => this.subtitle = subtitle}>Add comment</h2>
+                                <button onClick={() => this.closeModal('comment')}>close</button>
+                                <CommentForm
+                                    saveComment={this.props.addComment}
+                                    closeForm={() => this.closeModal('comment')}
+                                    parentId={this.props.post.id}
+                                />
+                            </Modal>
+
+                            {(this.props.match.params.id) &&
+                                <button name="add-comment" className="edit-button" onClick={() => this.openModal('comment')}>
+                                    <FAAdd />
+                                </button>
+                            }
+
+                            {this.props.match.params.id && this.props.post.commentIds &&
+                                this.props.post.commentIds.map(commentId => (
+                                    <Comment key={commentId} id={commentId} />
+                                ))}
+
+                        </div>
                     </div>
-                </div>
-            )
+                )
+            }
         }
         else {
             return (

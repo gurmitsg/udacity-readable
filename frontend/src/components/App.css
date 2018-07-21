@@ -352,3 +352,20 @@ button {
   background-color: #eee;
   border-radius: 5px;
 }
+
+.error-heading {
+  display: inline-block;
+  padding: 5px;
+  color: #fff;
+  background-color: #f00;
+  font-weight: bold;
+  margin-top: 20px;
+  border-bottom: 2px solid orangered;
+}
+
+.error-detail {
+  display: block;
+  color: red;
+  background-color: #feeea0;
+  margin: 10px 15px auto;  
+}

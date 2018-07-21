@@ -45,6 +45,15 @@ export const getPostsByCat = (category) => {
 }
 
 
+
+export const getPost_error = (postId) => {
+    return {
+        type: actionTypes.GET_POST_ERROR,
+        postId,
+    }
+}
+
+
 export const getPost_action = (post) => {
     return {
         type: actionTypes.GET_POST,
@@ -52,12 +61,14 @@ export const getPost_action = (post) => {
     }
 }
 
-
 export const getPost = (id) => {
     return dispatch => {
         return postsAPI.fetchPost(id)
             .then(response => {
                 return dispatch(getPost_action(response.data))
+            })
+            .catch(() => {
+                return dispatch(getPost_error(id))
             })
     }
 }
@@ -100,7 +111,7 @@ export const addPost = (post) => {
 }
 
 
-export const updatePost_action = (postId,post) => {
+export const updatePost_action = (postId, post) => {
     return {
         type: actionTypes.UPDATE_POST,
         postId,
@@ -109,11 +120,11 @@ export const updatePost_action = (postId,post) => {
 }
 
 
-export const updatePost = (postId,post) => {
+export const updatePost = (postId, post) => {
     return dispatch => {
-        return postsAPI.updatePost(postId,post)
+        return postsAPI.updatePost(postId, post)
             .then(response => {
-                return dispatch(updatePost_action(postId,response.data))
+                return dispatch(updatePost_action(postId, response.data))
             })
     }
 }
